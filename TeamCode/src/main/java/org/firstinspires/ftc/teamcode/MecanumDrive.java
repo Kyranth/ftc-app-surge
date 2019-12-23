@@ -136,31 +136,31 @@ public class MecanumDrive extends OpMode
         btmrght.setPower(rightPower * factor);
 
         if(strafing < 0){
-            toplft.setPower(strafing * factor);
-            toprght.setPower(-strafing * factor);
-            btmlft.setPower(-strafing * factor);
-            btmrght.setPower(strafing * factor);
+            toplft.setPower(strafing);
+            toprght.setPower(-strafing);
+            btmlft.setPower(-strafing);
+            btmrght.setPower(strafing);
 
         } if (strafing > 0) {
-            toplft.setPower(strafing * factor);
-            toprght.setPower(-strafing * factor);
-            btmlft.setPower(-strafing * factor);
-            btmrght.setPower(strafing * factor);
+            toplft.setPower(strafing);
+            toprght.setPower(-strafing);
+            btmlft.setPower(-strafing);
+            btmrght.setPower(strafing);
         }
 
-        if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y > 0) { // top right
+        if (gamepad1.left_stick_x > 0.5 && gamepad1.left_stick_y > 0.5) { // top right
             toplft.setPower(((gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor); // x = +; y = +; (x + y)/2 = +
             btmrght.setPower(((gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor);
 
-        } if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y < 0) { // bottom left
+        } if (gamepad1.left_stick_x < 0.5 && gamepad1.left_stick_y < 0.5) { // bottom left
             toplft.setPower(((gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor ); // x = -; y = -; (x + y)/2 = -
             btmrght.setPower(((gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor );
 
-        } if (gamepad1.left_stick_x < 0 && gamepad1.left_stick_y > 0) { // top left
+        } if (gamepad1.left_stick_x < 0.5 && gamepad1.left_stick_y > 0.5) { // top left
             toprght.setPower(((-gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor); // x = - * - = +; y = +; (x + y)/2 = +
             btmlft.setPower(((-gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor);
 
-        } if (gamepad1.left_stick_x > 0 && gamepad1.left_stick_y < 0) { // bottom left
+        } if (gamepad1.left_stick_x > 0.5 && gamepad1.left_stick_y < 0.5) { // bottom left
             toprght.setPower(((-gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor); // x = + * - = -; y = -; (x + y)/2 = -
             btmlft.setPower(((-gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor);
         }
