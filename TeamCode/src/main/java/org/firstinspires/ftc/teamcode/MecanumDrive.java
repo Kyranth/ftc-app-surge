@@ -28,7 +28,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.firstinspires.ftc.teamcode;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -54,7 +53,7 @@ import com.qualcomm.robotcore.util.Range;
 public class MecanumDrive extends OpMode
 {
     // Declare OpMode members.
-    double factor = 0.6;
+    private double factor = 0.6;
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor toprght = null;
     private DcMotor toplft = null;
@@ -92,6 +91,7 @@ public class MecanumDrive extends OpMode
      */
     @Override
     public void init_loop() {
+
     }
 
     /*
@@ -122,8 +122,6 @@ public class MecanumDrive extends OpMode
         leftPower    = Range.clip(drive + turn, -1.0, 1.0);
         rightPower   = Range.clip(drive - turn, -1.0, 1.0);
 
-
-
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
 //         leftPower  = -gamepad1.left_stick_y;
@@ -135,7 +133,7 @@ public class MecanumDrive extends OpMode
         toprght.setPower(rightPower * factor);
         btmrght.setPower(rightPower * factor);
 
-        if(strafing < 0){
+        if (strafing < 0) {
             toplft.setPower(strafing);
             toprght.setPower(-strafing);
             btmlft.setPower(-strafing);
@@ -146,23 +144,6 @@ public class MecanumDrive extends OpMode
             toprght.setPower(-strafing);
             btmlft.setPower(-strafing);
             btmrght.setPower(strafing);
-        }
-
-        if (gamepad1.left_stick_x > 0.5 && gamepad1.left_stick_y > 0.5) { // top right
-            toplft.setPower(((gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor); // x = +; y = +; (x + y)/2 = +
-            btmrght.setPower(((gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor);
-
-        } if (gamepad1.left_stick_x < 0.5 && gamepad1.left_stick_y < 0.5) { // bottom left
-            toplft.setPower(((gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor ); // x = -; y = -; (x + y)/2 = -
-            btmrght.setPower(((gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor );
-
-        } if (gamepad1.left_stick_x < 0.5 && gamepad1.left_stick_y > 0.5) { // top left
-            toprght.setPower(((-gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor); // x = - * - = +; y = +; (x + y)/2 = +
-            btmlft.setPower(((-gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor);
-
-        } if (gamepad1.left_stick_x > 0.5 && gamepad1.left_stick_y < 0.5) { // bottom left
-            toprght.setPower(((-gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor); // x = + * - = -; y = -; (x + y)/2 = -
-            btmlft.setPower(((-gamepad1.left_stick_x + gamepad1.left_stick_y) / 2) * factor);
         }
 
         // Show the elapsed game time and wheel power.
@@ -177,6 +158,7 @@ public class MecanumDrive extends OpMode
      */
     @Override
     public void stop() {
+
     }
 
 }
