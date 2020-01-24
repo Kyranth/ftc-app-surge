@@ -119,8 +119,8 @@ public class MecanumDrive extends OpMode
         double drive = -gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
         double strafing = gamepad1.left_stick_x;
-        leftPower    = Range.clip(drive + turn, -1.0, 1.0);
-        rightPower   = Range.clip(drive - turn, -1.0, 1.0);
+        leftPower = Range.clip(drive + turn, -1.0, 1.0);
+        rightPower = Range.clip(drive - turn, -1.0, 1.0);
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
