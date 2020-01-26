@@ -32,8 +32,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+/**
+ * CRServo Notes:
+ * Document: https://ftctechnh.github.io/ftc_app/doc/javadoc/com/qualcomm/robotcore/hardware/CRServo.html
+ *
+ * CRServo class is inherited from DCMotor Class
+ */
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -61,6 +69,9 @@ public class MecanumDrive extends OpMode
     private DcMotor btmrght = null;
     private DcMotor btmlft = null;
 
+    private CRServo DownSlider = null;
+    private CRServo UpSlider = null;
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -75,6 +86,10 @@ public class MecanumDrive extends OpMode
         toplft  = hardwareMap.get(DcMotor.class, "toplft");
         btmrght = hardwareMap.get(DcMotor.class, "btmrght");
         btmlft = hardwareMap.get(DcMotor.class, "btmlft");
+
+
+        DownSlider = hardwareMap.get(CRServo.class, "down");
+        UpSlider = hardwareMap.get(CRServo.class, "up");
 
 
 
@@ -164,4 +179,16 @@ public class MecanumDrive extends OpMode
 
     }
 
+    // Need to test 
+    public void liftArm() {
+        UpSlider.setDirection(DcMotorSimple.Direction.FORWARD);
+        UpSlider.setPower(10);
+
+
+        DownSlider.setDirection(DcMotorSimple.Direction.FORWARD);
+        DownSlider.setPower(10);
+
+        // Wait For getting into position
+        try{Thread.sleep(1000);}catch (Exception e){}
+    }
 }
