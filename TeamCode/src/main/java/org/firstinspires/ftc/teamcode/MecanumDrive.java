@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -72,6 +73,18 @@ public class MecanumDrive extends OpMode
     private CRServo DownSlider = null;
     private CRServo UpSlider = null;
 
+    private Servo PlateMover = null;
+    private Servo Finger = null;
+    private Servo Rist = null;
+
+    // Default Setup
+    private double DEFAULT_PLATE_MOVER_POSITION = 0;
+    private double DOWN_PLATE_MOVER_POSITION = 1;
+
+    private double DEFAULT_SLIDE_POWER = 100;
+
+    private boolean is_grapper_close = false;
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -88,9 +101,12 @@ public class MecanumDrive extends OpMode
         btmlft = hardwareMap.get(DcMotor.class, "btmlft");
 
 
-        DownSlider = hardwareMap.get(CRServo.class, "down");
-        UpSlider = hardwareMap.get(CRServo.class, "up");
+        DownSlider = hardwareMap.get(CRServo.class, "downslide");
+        UpSlider = hardwareMap.get(CRServo.class, "upslide");
 
+        PlateMover = hardwareMap.get(Servo.class, "platemover");
+        Finger = hardwareMap.get(Servo.class, "finger");
+        Rist = hardwareMap.get(Servo.class, "rist");
 
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -102,6 +118,14 @@ public class MecanumDrive extends OpMode
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
+
+        // Set up Servos
+        PlateMover.setDirection(Servo.Direction.FORWARD);
+        PlateMover.setPosition(this.DEFAULT_PLATE_MOVER_POSITION);
+
+        // One is close
+        Finger.setPosition(0);
+        Rist.setPosition(1);
     }
 
     /*
@@ -142,8 +166,8 @@ public class MecanumDrive extends OpMode
 
         // Tank Mode uses one stick to control each wheel.
         // - This requires no math, but it is hard to drive forward slowly and keep straight.
-//         leftPower  = -gamepad1.left_stick_y;
-//         rightPower = -gamepad1.right_stick_y;
+        // leftPower  = -gamepad1.left_stick_y;
+        // rightPower = -gamepad1.right_stick_y;
 
         // Send calculated power to wheels
         toplft.setPower(leftPower * factor);
@@ -164,11 +188,53 @@ public class MecanumDrive extends OpMode
             btmrght.setPower(strafing);
         }
 
+        if (gamepad1.right_bumper && gamepad1.dpad_up) {
+            this.liftArm(UpSlider, DcMotorSimple.Direction.REVERSE, this.DEFAULT_SLIDE_POWER);
+        } else if (gamepad1.right_bumper && gamepad1.dpad_down) {
+            this.liftArm(UpSlider, DcMotorSimple.Direction.FORWARD, this.DEFAULT_SLIDE_POWER);
+        } else {
+            this.stopLiftArm(UpSlider);
+        }
+
+        if(gamepad1.left_bumper && gamepad1.dpad_up){
+            this.liftArm(DownSlider, DcMotorSimple.Direction.FORWARD,  this.DEFAULT_SLIDE_POWER);
+        } else if (gamepad1.left_bumper && gamepad1.dpad_down){
+            this.liftArm(DownSlider, DcMotorSimple.Direction.REVERSE, this.DEFAULT_SLIDE_POWER);
+        } else {
+            this.stopLiftArm(DownSlider);
+        }
+
+        if(gamepad1.y){
+            PlateMover.setPosition(this.DEFAULT_PLATE_MOVER_POSITION);
+        }
+        if(gamepad1.a){
+            PlateMover.setPosition(this.DOWN_PLATE_MOVER_POSITION);
+        }
+
+        if(gamepad1.x){
+            Finger.setPosition(0);
+        }
+        if(gamepad1.b){
+            Finger.setPosition(1);
+        }
+
+        if(gamepad1.dpad_left){
+            Rist.setPosition(0.5);
+        }
+        if(gamepad1.dpad_right){
+            // open
+            Rist.setPosition(1);
+        }
+
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Factor", "FactorValue (%.2f)", factor);
         telemetry.addData("Strafing", "StrafingValue (%.2f)", strafing);
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+
+        telemetry.addData("PlateMover", "Port (%d) | Position (%.2f)", PlateMover.getPortNumber(), PlateMover.getPosition());
+        telemetry.addData("Finger", "Port (%d) | Position (%.2f)", Finger.getPortNumber(), Finger.getPosition());
+        telemetry.addData("Rist", "Port (%d) | Position (%.2f)", Rist.getPortNumber(), Rist.getPosition());
     }
 
     /*
@@ -179,16 +245,13 @@ public class MecanumDrive extends OpMode
 
     }
 
-    // Need to test 
-    public void liftArm() {
-        UpSlider.setDirection(DcMotorSimple.Direction.FORWARD);
-        UpSlider.setPower(10);
+    // Need to test
+    public void liftArm(CRServo servo, DcMotorSimple.Direction direction, double power) {
+        servo.setDirection(direction);
+        servo.setPower(power);
+    }
 
-
-        DownSlider.setDirection(DcMotorSimple.Direction.FORWARD);
-        DownSlider.setPower(10);
-
-        // Wait For getting into position
-        try{Thread.sleep(1000);}catch (Exception e){}
+    public void stopLiftArm(CRServo servo){
+        servo.setPower(0);
     }
 }

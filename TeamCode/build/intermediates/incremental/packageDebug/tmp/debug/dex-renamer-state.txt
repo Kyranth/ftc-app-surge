@@ -1,4 +1,4 @@
-#Mon Dec 23 20:53:29 EST 2019
-base.0=/Users/k084/Documents/Repositories/Project-H/TeamCode/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+#Sun Jan 26 13:08:31 EST 2020
+base.0=/Users/jiahao/Projects/Project-H/TeamCode/build/intermediates/dex/debug/mergeDexDebug/out
 path.0=classes.dex
 renamed.0=classes.dex
