@@ -125,7 +125,7 @@ public class MecanumDrive extends OpMode
 
         // One is close
         Finger.setPosition(0);
-        Rist.setPosition(1);
+        Rist.setPosition(0.5);
     }
 
     /*
@@ -212,8 +212,15 @@ public class MecanumDrive extends OpMode
         }
 
         if(gamepad1.x){
-            Finger.setPosition(0);
+            if(Finger.getPosition() == 1){
+                Finger.setPosition(0);
+                try{Thread.sleep(500);}catch (Exception e){}
+            }else if(Finger.getPosition() == 0){
+                Finger.setPosition(1);
+                try{Thread.sleep(500);}catch (Exception e){}
+            }
         }
+
         if(gamepad1.b){
             Finger.setPosition(1);
         }

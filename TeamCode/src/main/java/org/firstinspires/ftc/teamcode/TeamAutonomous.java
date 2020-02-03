@@ -60,7 +60,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="TeamAutonomous", group="Autonomous")
+@TeleOp(name="TeamAutonomous", group="Autonomous")
 //@Disabled
 public class TeamAutonomous extends OpMode
 {
@@ -142,7 +142,7 @@ public class TeamAutonomous extends OpMode
     public void start() {
         runtime.reset();
 
-        try{Thread.sleep(20000);}catch (Exception e){}
+        try{Thread.sleep(3000);}catch (Exception e){}
         toplft.setPower(this.factor);
         btmlft.setPower(this.factor);
         toprght.setPower(this.factor);
